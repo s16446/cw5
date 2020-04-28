@@ -32,6 +32,7 @@ namespace WebApplication1.Services
 
                 com.CommandText = "select [IndexNumber], [FirstName], [LastName], [BirthDate] from dbo.Student where IndexNumber = @index_no;";
                 com.Parameters.AddWithValue("name", request.Studies);
+                com.Parameters.AddWithValue("index", request.Studies);
 
                 var dr = com.ExecuteReader();
 
