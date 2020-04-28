@@ -32,7 +32,7 @@ namespace WebApplication1.DAL
                     st.IndexNumber = dr["IndexNumber"].ToString();
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
-                    st.BirthDate = DateTime.Parse(dr["BirthDate"].ToString()).ToShortDateString();
+                    st.BirthDate = DateTime.Parse(dr["BirthDate"].ToString());
                     _students.Add(st);
                 }
             }
@@ -63,7 +63,7 @@ namespace WebApplication1.DAL
                     st.IndexNumber = dr["IndexNumber"].ToString();
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
-                    st.BirthDate = DateTime.Parse(dr["BirthDate"].ToString()).ToShortDateString();
+                    st.BirthDate = DateTime.Parse(dr["BirthDate"].ToString());
                     n.Add(st);
                 }
             }
