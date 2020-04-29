@@ -33,6 +33,19 @@ namespace WebApplication1.Controllers
             }
 
         }
+
+        [HttpPost("promotions")]
+        public IActionResult PromoteStudents(PromoteStudentsRequest request)
+        {
+            var response = _service.PromoteStudents(request);
+            switch (response.getStatus()) {
+                case 201: return new CreatedAtRouteResult("api/enrollments/promotions", response);//(response);
+                case 404: return NotFound(response.getMessage());
+                case 400: return BadRequest(response.getMessage());
+                default: return BadRequest(response.getMessage());
+            }
+
+        }
     }
 
 

@@ -134,9 +134,55 @@ namespace WebApplication1.Services
         }
     }
 
-        public void PromoteStudents(int semester, string studies)
+        public PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request)
         {
-            throw new NotImplementedException();
+            var response = new PromoteStudentsResponse();
+            response.setStatus(400, "Unknown Error"); // domyślnie - błąd
+
+            using (var connection = new SqlConnection(CONN_STR))
+            { 
+                connection.Open();
+                var command = connection.CreateCommand();
+                var transaction = connection.BeginTransaction();
+                
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                command.CommandText = "select e.IdEnrollment from dbo.Enrollment e inner join dbo.Studies s on e.IdStudy = s.IdStudy where s.Name = @studyName and e.Semester = @semesterNumber";
+                command.Parameters.AddWithValue("studyName", request.Studies);
+                command.Parameters.AddWithValue("semesterNumber", request.Semester);
+                
+                var reader = command.ExecuteReader();
+                if (!reader.Read()) {
+                    reader.Close();
+                    response.setStatus(404, "ERROR: nie ma studiów o takiej nazwie");
+                    transaction.Rollback();
+                }
+                else
+                { 
+                    reader.Close();
+                    
+
+                    using (SqlConnection conn = new SqlConnection(CONN_STR)) 
+                    {
+                        conn.Open();
+                        SqlCommand cmd  = new SqlCommand("Promote", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add(new SqlParameter("@studies", request.Studies));
+                        cmd.Parameters.Add(new SqlParameter("@semester", request.Semester));
+                        cmd.ExecuteReader();
+                        conn.Close();
+                    }
+                response.Semester = request.Semester + 1;
+                response.StartDate = DateTime.Now.ToString("dd.MM.yyyy");
+                response.StudiesName = request.Studies;
+
+                transaction.Commit();     
+                response.setStatus(201, "Studenci zostali promowani na następny semestr");
+                }
+            }
+            return response;
         }
     }
 }

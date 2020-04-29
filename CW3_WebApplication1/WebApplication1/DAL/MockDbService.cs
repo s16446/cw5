@@ -17,18 +17,23 @@ namespace WebApplication1.DAL
             using (var com = new SqlCommand())
             {
                 com.Connection = client;
-                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate from dbo.Student;";
+                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate, ss.Name as Studies from dbo.Student s " +
+                        " left join dbo.Enrollment e on s.IdEnrollment = e.IdEnrollment " +
+                        " left join dbo.Studies ss on e.IdStudy = ss.IdStudy";
 
                 client.Open();
 
                 var dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    var st = new Student();
-                    st.IndexNumber = dr["IndexNumber"].ToString();
-                    st.FirstName = dr["FirstName"].ToString();
-                    st.LastName = dr["LastName"].ToString();
-                    st.BirthDate = dr["BirthDate"].ToString();
+                    var st = new Student
+                    {
+                        IndexNumber = dr["IndexNumber"].ToString(),
+                        FirstName = dr["FirstName"].ToString(),
+                        LastName = dr["LastName"].ToString(),
+                        BirthDate = dr["BirthDate"].ToString(),
+                        Studies = dr["Studies"].ToString()
+                    };
                     _students.Add(st);
                 }
             }
@@ -55,11 +60,13 @@ namespace WebApplication1.DAL
                 var dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    var st = new Student();
-                    st.IndexNumber = dr["IndexNumber"].ToString();
-                    st.FirstName = dr["FirstName"].ToString();
-                    st.LastName = dr["LastName"].ToString();
-                    st.BirthDate = dr["BirthDate"].ToString();
+                    var st = new Student
+                    {
+                        IndexNumber = dr["IndexNumber"].ToString(),
+                        FirstName = dr["FirstName"].ToString(),
+                        LastName = dr["LastName"].ToString(),
+                        BirthDate = dr["BirthDate"].ToString()
+                    };
                     n.Add(st);
                 }
             }
