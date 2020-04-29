@@ -1,29 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace WebApplication1.DTOs.Requests
 {
     public class EnrollStudentRequest
     {
-        [Required(ErrorMessage = "Musisz podać IndexNumber")]
+        [Required(ErrorMessage = "Musisz podać numer indeksu")]
+        [RegularExpression("^s[0-9]{4,6}")]
         public string IndexNumber { get; set; }
         
         [Required(ErrorMessage ="Musisz podać imię")]
-        [MaxLength(200)]
+        [MaxLength(100)]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Musisz podać nazwisko")]
-        [MaxLength(200)]
+        [MaxLength(100)]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Musisz podać datę urodzenia")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
-        public DateTime BirthDate { get; set; }
+        [Required(ErrorMessage = "Musisz podać datę urodzenia (w formacie dd.MM.yyyy)")]
+        public string BirthDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Musisz podać nazwę studiów")]
         public string Studies { get; set; }
  
     }

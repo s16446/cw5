@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApplication1.Models;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace WebApplication1.DAL
@@ -16,12 +13,11 @@ namespace WebApplication1.DAL
         {
             _students = new List<Student>();
            
-
             using (var client = new SqlConnection(CONN_STR))
             using (var com = new SqlCommand())
             {
                 com.Connection = client;
-                com.CommandText = "select [IndexNumber], [FirstName], [LastName], [BirthDate] from dbo.Student;";
+                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate from dbo.Student;";
 
                 client.Open();
 
@@ -32,7 +28,7 @@ namespace WebApplication1.DAL
                     st.IndexNumber = dr["IndexNumber"].ToString();
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
-                    st.BirthDate = DateTime.Parse(dr["BirthDate"].ToString());
+                    st.BirthDate = dr["BirthDate"].ToString();
                     _students.Add(st);
                 }
             }
@@ -52,7 +48,7 @@ namespace WebApplication1.DAL
             using (var com = new SqlCommand())
             {
                 com.Connection = client;
-                com.CommandText = "select [IndexNumber], [FirstName], [LastName], [BirthDate] from dbo.Student WHERE IndexNumber = @index_no";
+                com.CommandText = "select IndexNumber, FirstName, LastName, BirthDate from dbo.Student WHERE IndexNumber = @index_no";
                 com.Parameters.AddWithValue("index_no", index_no);
                 client.Open();
                 
@@ -63,12 +59,10 @@ namespace WebApplication1.DAL
                     st.IndexNumber = dr["IndexNumber"].ToString();
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
-                    st.BirthDate = DateTime.Parse(dr["BirthDate"].ToString());
+                    st.BirthDate = dr["BirthDate"].ToString();
                     n.Add(st);
                 }
             }
-            
-            //n.Add(_students.Find(x => x.IndexNumber.Equals(id)));
             return n;
         }
 
@@ -101,7 +95,7 @@ namespace WebApplication1.DAL
                 "LEFT JOIN dbo.Enrollment e ON st.IdEnrollment = e.IdEnrollment " +
                 "LEFT JOIN dbo.Studies s ON e.IdStudy = s.IdStudy " +
                 "WHERE IndexNumber = '" + id + "' AND e.Semester = '" + semester + "'";
-                Console.WriteLine(com.CommandText);
+  
                 client.Open();
                 wpisy = new List<Enrollment>();
 
@@ -113,7 +107,6 @@ namespace WebApplication1.DAL
                     e.StartDate = DateTime.Parse(dr["StartDate"].ToString()).ToShortDateString();
                     e.StudiesName = dr["Name"].ToString();
                     wpisy.Add(e);
-                    Console.WriteLine(e.StudiesName);
                 }
             }
             return wpisy;

@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class EnrollmentsController : ControllerBase
     {
-        private IStudentDbService _service;
+        private readonly IStudentDbService _service;
 
         public EnrollmentsController(IStudentDbService service) 
         { 
@@ -25,10 +25,12 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult EnrollStudent(EnrollStudentRequest request)
         {
-
-            _service.EnrollStudent(request);
-            var response = new EnrollStudentResponse();
-            return Ok(response);
+            var response = _service.EnrollStudent(request);
+            switch (response.getStatus()) {
+                case 201: return new CreatedAtRouteResult("api/enrollments", response);//(response);
+                case 400: return BadRequest(response.getMessage());
+                default: return BadRequest(response.getMessage());
+            }
 
         }
     }

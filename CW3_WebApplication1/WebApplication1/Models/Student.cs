@@ -13,18 +13,9 @@ namespace WebApplication1.Models
 
         public string LastName { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public string BirthDate { get; set; }
 
         public string Studies { get; set; }
 
-        internal DateTime getStartDate()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal int getSemester()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

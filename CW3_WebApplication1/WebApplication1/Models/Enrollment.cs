@@ -13,5 +13,5 @@ namespace WebApplication1.Models
 
         public string StudiesName { get; set; }
 
-}
+    }
 }
