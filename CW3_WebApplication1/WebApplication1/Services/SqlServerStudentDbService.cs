@@ -155,7 +155,7 @@ namespace WebApplication1.Services
                 var reader = command.ExecuteReader();
                 if (!reader.Read()) {
                     reader.Close();
-                    response.setStatus(404, "ERROR: nie ma studiów o takiej nazwie");
+                    response.setStatus(404, "ERROR: nie znaleziono semestru i/lub studiów");
                     transaction.Rollback();
                 }
                 else

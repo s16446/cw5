@@ -12,7 +12,7 @@ namespace WebApplication1.DTOs.Requests
 		public string Studies { get; set; }
 
 		[Required(ErrorMessage = "Numer semestru jest wymagany")]
-		[RegularExpression("[1-9][0-9]*")]
+		[RegularExpression("[1-9][0-9]{0,1}")]
 		public int Semester { get; set; }
 	}
 }
